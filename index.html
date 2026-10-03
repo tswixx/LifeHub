@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fff1f2">
+<title>LifeHub</title>
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--pink:#ec4899;--pink-d:#db2777;--pink-l:#fce7f3;--rose-bg:#fff1f2;--purple:#9333ea;--ink:#1f2937;--muted:#6b7280;--faint:#9ca3af;--line:#f1e4e8;
+  --green:#16a34a;--green-l:#dcfce7;--amber:#d97706;--amber-l:#fef3c7;--red:#dc2626;--red-l:#fee2e2;--r:20px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--rose-bg);color:var(--ink);min-height:100vh;padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit;padding:0}
+input,select,textarea{font:inherit}
+.hidden{display:none!important}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:calc(12px + env(safe-area-inset-top)) 18px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:800;background:linear-gradient(90deg,#fb7185,#db2777);-webkit-background-clip:text;background-clip:text;color:transparent}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--pink-l);color:var(--pink-d);display:flex;align-items:center;justify-content:center;font-size:17px}
+main{max-width:520px;margin:0 auto;padding:14px 16px}
+h2{font-size:20px;margin:4px 0 12px}
+h3{font-size:13px;margin:22px 2px 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:8px}
+h3 .more{margin-left:auto;text-transform:none;letter-spacing:0;color:var(--pink-d);font-weight:700;font-size:13px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.btn{display:block;width:100%;padding:14px;border-radius:16px;font-weight:700;text-align:center;font-size:15px}
+.btn-primary{background:linear-gradient(90deg,#fb7185,#ec4899);color:#fff;box-shadow:0 6px 16px rgba(236,72,153,.28)}
+.btn-purple{background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;box-shadow:0 6px 16px rgba(168,85,247,.25)}
+.btn-outline{background:#fff;border:2px solid #f472b6;color:var(--pink-d)}
+.btn-ghost{background:#f3f4f6;color:#374151}
+.btn-danger{background:#fff;border:2px solid #fca5a5;color:var(--red)}
+.btn-sm{padding:8px 12px;font-size:13px;border-radius:12px;width:auto;display:inline-block}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.scroll-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.scroll-chips::-webkit-scrollbar{display:none}
+.scroll-chips .chip{flex:none}
+.chip{padding:8px 13px;border-radius:99px;font-size:13px;font-weight:700;background:#f9fafb;border:1px solid #e5e7eb;color:#4b5563;white-space:nowrap}
+.chip.on{background:var(--pink-l);border-color:var(--pink);color:var(--pink-d)}
+.seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px}
+.seg button{flex:1;padding:9px;border-radius:10px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--pink-l);color:var(--pink-d)}
+.empty{text-align:center;padding:22px 10px;color:var(--muted);font-size:14px}
+.empty .ico{font-size:30px;margin-bottom:6px}
+.toast{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top));transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:99px;font-size:13px;font-weight:600;z-index:60;max-width:90vw;text-align:center}
+/* home */
+.hello{font-size:22px;font-weight:800;margin:4px 0 2px}
+.quote{margin-top:14px;border-radius:22px;padding:18px 18px 16px;color:#fff;background:linear-gradient(135deg,#fb7185,#ec4899 50%,#a855f7);box-shadow:0 10px 24px rgba(236,72,153,.25);position:relative;overflow:hidden}
+.quote::after{content:"“";position:absolute;right:12px;top:-18px;font-size:120px;font-family:Georgia,serif;opacity:.18;line-height:1}
+.quote .lbl2{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.quote p{font-size:18px;font-weight:700;line-height:1.4;margin:8px 0 8px;position:relative;z-index:1}
+.quote small{font-weight:600;opacity:.9}
+.snap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 10px}
+.stat .v{font-size:18px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.stat .l{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.countdown{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e9d5ff;border-radius:18px;padding:12px 14px;margin-top:12px}
+.countdown .n{min-width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:22px;line-height:1}
+.countdown .n small{font-size:10px;font-weight:700;opacity:.9;margin-top:2px}
+/* event + task cards (big & readable) */
+.list{display:flex;flex-direction:column;gap:8px}
+.ev{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;width:100%;text-align:left}
+.ev .bar{width:6px;align-self:stretch;border-radius:4px;flex:none}
+.ev .t{min-width:54px;font-weight:800;font-size:15px}
+.ev .t small{display:block;font-weight:600;color:var(--faint);font-size:12px;margin-top:2px}
+.ev .main{flex:1;min-width:0}
+.ev .ttl{font-weight:700;font-size:16px;line-height:1.3}
+.ev .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.ev .emo{font-size:20px}
+.task{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.tick{width:26px;height:26px;border-radius:50%;border:2.5px solid #f9a8d4;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;margin-top:1px}
+.tick.on{background:var(--pink);border-color:var(--pink)}
+.task .main{flex:1;min-width:0;text-align:left}
+.task .ttl{font-weight:700;font-size:16px;line-height:1.3}
+.task.done .ttl{text-decoration:line-through;color:var(--faint)}
+.task .sub{font-size:13px;color:var(--muted);margin-top:3px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;background:#f3f4f6;color:#4b5563}
+.due-late{background:var(--red-l);color:var(--red)}
+.due-soon{background:var(--amber-l);color:var(--amber)}
+.due-ok{background:var(--green-l);color:var(--green)}
+/* calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin:2px 0 10px}
+.arrow{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:800;color:var(--pink-d);font-size:16px}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{text-align:center;font-size:11px;font-weight:800;color:var(--faint);padding:4px 0}
+.cell{aspect-ratio:1/1.08;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding-top:5px;gap:4px;font-weight:700;font-size:15px}
+.cell.out{background:transparent;border-color:transparent;color:#d1d5db}
+.cell.today .num{background:var(--pink);color:#fff}
+.cell.sel{border:2px solid var(--pink);box-shadow:0 2px 8px rgba(236,72,153,.25)}
+.cell .num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;max-width:36px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.more-n{font-size:10px;font-weight:800;color:var(--muted);line-height:8px}
+.dot.due{background:#fff;border:2px solid var(--purple);width:9px;height:9px}
+.day-title{font-size:18px;font-weight:800;margin:18px 2px 10px;display:flex;align-items:center;gap:8px}
+.day-title>div{flex:1;min-width:0;line-height:1.2}
+.day-title small{display:block;color:var(--pink-d);font-weight:700;font-size:13px;margin-top:2px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend>span{display:flex;align-items:center;gap:5px}
+.legend .dot{flex:none}
+.ag-day{margin-bottom:16px}
+.ag-h{font-weight:800;font-size:15px;margin:0 2px 8px}
+.ag-h.today{color:var(--pink-d)}
+/* money */
+.bars{display:flex;flex-direction:column;gap:10px}
+.barrow .top{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:5px}
+.track{height:10px;background:#f3f4f6;border-radius:99px;overflow:hidden}
+.track>div{height:100%;border-radius:99px}
+.tx{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.tx:last-child{border-bottom:0}
+.tx .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.tx .main{flex:1;min-width:0}
+.tx .main b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .amt{font-weight:800;font-size:15px;white-space:nowrap}
+.chart{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:6px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.chart .pair{display:flex;gap:3px;align-items:flex-end;height:100%;width:100%;justify-content:center}
+.chart .pair div{width:40%;max-width:14px;border-radius:5px 5px 2px 2px;min-height:2px}
+.chart .m{font-size:11px;font-weight:700;color:var(--faint)}
+.goal{padding:10px 0;border-bottom:1px solid var(--line)}
+.goal:last-child{border-bottom:0}
+/* forms + sheets */
+.lbl{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:14px 0 6px}
+.in{width:100%;padding:12px 14px;border-radius:14px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600;font-size:16px;color:var(--ink);-webkit-appearance:none;appearance:none;min-height:48px}
+textarea.in{min-height:70px;resize:vertical;font-weight:500}
+.in:focus{outline:none;border-color:var(--pink)}
+.in.big{font-size:30px;font-weight:800;text-align:center;padding:14px}
+.check{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;margin-top:14px}
+.check input{width:22px;height:22px;accent-color:var(--pink)}
+.sheet-bg{position:fixed;inset:0;background:rgba(17,24,39,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+.sheet h2{margin-top:0}
+.addgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.addbtn{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 12px;text-align:left;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.addbtn .e{font-size:26px}
+.addbtn b{display:block;margin-top:6px;font-size:15px}
+.addbtn span{font-size:12px;color:var(--muted)}
+/* nav */
+nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;background:#fff;border-top:1px solid #f3f4f6;border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.08);display:flex;justify-content:space-around;align-items:flex-end;padding:10px 8px calc(14px + env(safe-area-inset-bottom));z-index:20}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--faint);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;min-width:58px}
+.nav-btn.on{color:var(--pink)}
+.nav-btn svg{width:24px;height:24px}
+.fab{background:var(--pink);color:#fff;padding:12px;border-radius:50%;border:4px solid #fff;box-shadow:0 6px 16px rgba(236,72,153,.4);margin-top:-30px;display:flex}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" id="app-name">LifeHub</div>
+  <button class="icon-btn" data-action="settings" aria-label="Settings">⚙️</button>
+</header>
+
+<main>
+  <section id="tab-home"></section>
+  <section id="tab-cal" class="hidden"></section>
+  <section id="tab-tasks" class="hidden"></section>
+  <section id="tab-money" class="hidden"></section>
+</main>
+
+<div id="sheet" class="sheet-bg hidden" data-action="sheet-bg"><div class="sheet" id="sheet-body"></div></div>
+<input type="file" id="restore-input" accept=".json,application/json,text/plain" class="hidden">
+<datalist id="course-list"></datalist>
+
+<nav>
+  <button class="nav-btn on" data-action="tab" data-tab="home">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Home
+  </button>
+  <button class="nav-btn" data-action="tab" data-tab="cal">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M3 10h18M8 3v4M16 3v4"/></svg>Calendar
+  </button>
+  <button class="nav-btn" data-action="add-menu" aria-label="Add">
+    <span class="fab"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg></span>Add
+  </button>
+  <button class="nav-btn" data-action="tab" data-tab="tasks">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Tasks
+  </button>
+  <button class="nav-btn" data-action="tab" data-tab="money">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2" stroke-width="2"/><circle cx="12" cy="12" r="2.5" stroke-width="2"/></svg>Money
+  </button>
+</nav>
+
+<script>
+// ================= SETUP =================
+const APP_NAME = 'LifeHub';          // rename the app here
+const KEY = 'lifehub_v1';
+
+const EVENT_CATS = [
+  { id: 'tutoring',  label: 'Tutoring',  emoji: '📚', color: '#0ea5e9' },
+  { id: 'plans',     label: 'Plans',     emoji: '🎉', color: '#10b981' },
+  { id: 'lifts',     label: 'Lifts',     emoji: '🚗', color: '#6366f1' },
+  { id: 'general',   label: 'General',   emoji: '💖', color: '#ec4899' },
+  { id: 'kdjam',     label: 'KD Jam',    emoji: '⭐', color: '#f59e0b' },
+  { id: 'important', label: 'Important', emoji: '❗', color: '#ef4444' },
+];
+// older category names from earlier versions -> new ones
+const OLD_CATS = { wits: 'general', personal: 'general', social: 'plans', other: 'general' };
+const INCOME_SRC = [
+  { id: 'tutoring', label: 'Tutoring', emoji: '📚', color: '#0ea5e9' },
+  { id: 'kdjam',    label: 'KD Jam',   emoji: '⭐', color: '#f59e0b' },
+  { id: 'other',    label: 'Other',    emoji: '💰', color: '#10b981' },
+];
+const SPEND_CATS = [
+  { id: 'shopping',  label: 'Shopping',     emoji: '🛍️', color: '#ec4899' },
+  { id: 'food',      label: 'Food',         emoji: '🍔', color: '#f97316' },
+  { id: 'going-out', label: 'Going out',    emoji: '🎉', color: '#a855f7' },
+  { id: 'transport', label: 'Transport',    emoji: '🚗', color: '#0ea5e9' },
+  { id: 'beauty',    label: 'Beauty',       emoji: '💅', color: '#f43f5e' },
+  { id: 'data',      label: 'Data/Airtime', emoji: '📱', color: '#14b8a6' },
+  { id: 'uni',       label: 'Uni',          emoji: '🎓', color: '#9333ea' },
+  { id: 'gifts',     label: 'Gifts',        emoji: '🎁', color: '#eab308' },
+  { id: 'other',     label: 'Other',        emoji: '🧾', color: '#64748b' },
+];
+const TASK_TYPES = [
+  { id: 'assignment', label: 'Assignment', emoji: '📝' },
+  { id: 'test',       label: 'Test',       emoji: '🧪' },
+  { id: 'exam',       label: 'Exam',       emoji: '📖' },
+  { id: 'project',    label: 'Project',    emoji: '📂' },
+  { id: 'reading',    label: 'Reading',    emoji: '📚' },
+  { id: 'todo',       label: 'To-do',      emoji: '✅' },
+];
+const by = (arr) => Object.fromEntries(arr.map(x => [x.id, x]));
+const ECAT = by(EVENT_CATS), ISRC = by(INCOME_SRC), SCAT = by(SPEND_CATS), TTYPE = by(TASK_TYPES);
+
+const QUOTES = [
+  ['It always seems impossible until it\'s done.', 'Nelson Mandela'],
+  ['Education is the most powerful weapon which you can use to change the world.', 'Nelson Mandela'],
+  ['The secret of getting ahead is getting started.', 'Mark Twain'],
+  ['Believe you can and you\'re halfway there.', 'Theodore Roosevelt'],
+  ['Do what you can, with what you have, where you are.', 'Theodore Roosevelt'],
+  ['Well done is better than well said.', 'Benjamin Franklin'],
+  ['An investment in knowledge pays the best interest.', 'Benjamin Franklin'],
+  ['It does not matter how slowly you go as long as you do not stop.', 'Confucius'],
+  ['The journey of a thousand miles begins with one step.', 'Lao Tzu'],
+  ['Act as if what you do makes a difference. It does.', 'William James'],
+  ['Quality is not an act, it is a habit.', 'Aristotle'],
+  ['Nothing will work unless you do.', 'Maya Angelou'],
+  ['If you\'re always trying to be normal, you will never know how amazing you can be.', 'Maya Angelou'],
+  ['You are never too old to set another goal or to dream a new dream.', 'C. S. Lewis'],
+  ['What you do today can improve all your tomorrows.', 'Ralph Marston'],
+  ['Start where you are. Use what you have. Do what you can.', 'Arthur Ashe'],
+  ['The best way to predict the future is to create it.', 'Peter Drucker'],
+  ['Success is the sum of small efforts, repeated day in and day out.', 'Robert Collier'],
+  ['You miss 100% of the shots you don\'t take.', 'Wayne Gretzky'],
+  ['Opportunities don\'t happen. You create them.', 'Chris Grosser'],
+  ['Dream big and dare to fail.', 'Norman Vaughan'],
+  ['Keep your face always toward the sunshine — and shadows will fall behind you.', 'Walt Whitman'],
+  ['With the new day comes new strength and new thoughts.', 'Eleanor Roosevelt'],
+  ['No one can make you feel inferior without your consent.', 'Eleanor Roosevelt'],
+  ['Learning never exhausts the mind.', 'Leonardo da Vinci'],
+  ['In the middle of every difficulty lies opportunity.', 'Albert Einstein'],
+  ['Great things are done by a series of small things brought together.', 'Vincent van Gogh'],
+  ['Be yourself; everyone else is already taken.', 'Oscar Wilde'],
+  ['Whatever you are, be a good one.', 'Abraham Lincoln'],
+  ['Small steps every day add up to big results.', ''],
+  ['You\'ve survived every hard day so far. Today is no different.', ''],
+  ['Progress, not perfection.', ''],
+  ['Your future self is cheering you on. 💖', ''],
+  ['Done is better than perfect.', ''],
+  ['One task at a time. You\'ve got this.', ''],
+  ['Rest is part of the work too.', ''],
+  ['Be proud of how far you\'ve come — and excited for where you\'re going.', ''],
+  ['A little progress each day adds up to big results.', ''],
+  ['You are capable of more than you know.', ''],
+  ['Make today so good that yesterday gets jealous.', ''],
+  ['Hard work beats talent when talent doesn\'t work hard.', 'Tim Notke'],
+  ['Discipline is choosing between what you want now and what you want most.', ''],
+  ['Fall seven times, stand up eight.', 'Japanese proverb'],
+  ['If you want to go fast, go alone. If you want to go far, go together.', 'African proverb'],
+  ['Courage doesn\'t always roar. Sometimes it\'s the quiet voice saying "I will try again tomorrow."', 'Mary Anne Radmacher'],
+];
+
+// ================= DATA =================
+const DEFAULTS = { settings: { name: '', budget: 0 }, events: [], tasks: [], income: [], spending: [], goals: [] };
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if (d && Array.isArray(d.events)) { const out = { ...structuredClone(DEFAULTS), ...d }; out.settings = { ...DEFAULTS.settings, ...d.settings }; return out; }
+  } catch {}
+  return structuredClone(DEFAULTS);
+}
+let D = load();
+D.events.forEach(e => { if (!EVENT_CATS.some(c => c.id === e.cat)) e.cat = OLD_CATS[e.cat] || 'general'; });
+function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch { toast('Couldn\'t save — phone storage may be full'); } }
+
+// ================= UTILS =================
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseYmd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const today = () => ymd(new Date());
+const daysBetween = (a, b) => Math.round((parseYmd(b) - parseYmd(a)) / 864e5);
+const money = n => { const v = Math.round(Number(n) || 0); return (v < 0 ? '−R' : 'R') + String(Math.abs(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+const longDay = s => parseYmd(s).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' });
+const shortDay = s => parseYmd(s).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short' });
+const monthLabel = (y, m) => new Date(y, m, 1).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+const firstName = n => String(n || '').trim().split(/\s+/)[0] || '';
+let toastT;
+function toast(msg) {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 2600);
+}
+const chipsHTML = (list, cur, action) => list.map(x => `<button class="chip ${x.id === cur ? 'on' : ''}" data-action="${action}" data-v="${x.id}">${x.emoji ? x.emoji + ' ' : ''}${esc(x.label)}</button>`).join('');
+function setChip(el) { el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === el)); }
+const emptyBox = (ico, text, btn = '') => `<div class="empty"><div class="ico">${ico}</div>${text}${btn}</div>`;
+
+// ================= EVENTS (with weekly repeats) =================
+function occursOn(ev, date) {
+  if (ev.repeat !== 'weekly') return ev.date === date;
+  if (date < ev.date || (ev.until && date > ev.until)) return false;
+  if ((ev.skip || []).includes(date)) return false;
+  return daysBetween(ev.date, date) % 7 === 0;
+}
+const eventsOn = date => D.events.filter(e => occursOn(e, date))
+  .sort((a, b) => (a.allDay ? '00' : a.start || '99').localeCompare(b.allDay ? '00' : b.start || '99'));
+const tasksDueOn = date => D.tasks.filter(t => t.due === date);
+const timeText = e => e.allDay ? 'All day' : (e.start || '') + (e.end ? `<small>– ${e.end}</small>` : '');
+function eventCard(e, date) {
+  const c = ECAT[e.cat] || ECAT.general;
+  return `<button class="ev" data-action="open-event" data-id="${e.id}" data-date="${date}"${e.cat === 'important' ? ' style="border:2px solid #fca5a5;background:#fff5f5"' : ''}>
+    <span class="bar" style="background:${c.color}"></span>
+    <span class="t">${timeText(e)}</span>
+    <span class="main"><div class="ttl">${esc(e.title)}</div><div class="sub">${c.emoji} ${c.label}${e.location ? ' · 📍 ' + esc(e.location) : ''}${e.repeat === 'weekly' ? ' · 🔁 weekly' : ''}</div></span>
+  </button>`;
+}
+
+// ================= TASKS =================
+function dueInfo(t) {
+  if (!t.due) return { cls: '', text: 'No due date' };
+  const d = daysBetween(today(), t.due);
+  const when = d < 0 ? `${-d} day${d === -1 ? '' : 's'} late` : d === 0 ? 'Due today' : d === 1 ? 'Due tomorrow' : `in ${d} days`;
+  const cls = t.done ? '' : d < 0 ? 'due-late' : d <= 3 ? 'due-soon' : 'due-ok';
+  return { cls, text: (d >= 2 ? shortDay(t.due) + ' · ' : '') + when + (t.time ? ' · ' + t.time : '') };
+}
+function taskCard(t) {
+  const ty = TTYPE[t.type] || TTYPE.todo, di = dueInfo(t);
+  return `<div class="task ${t.done ? 'done' : ''}">
+    <button class="tick ${t.done ? 'on' : ''}" data-action="toggle-task" data-id="${t.id}" aria-label="Mark done">${t.done ? '✓' : ''}</button>
+    <button class="main" data-action="open-task" data-id="${t.id}">
+      <div class="ttl">${t.important ? '⭐ ' : ''}${esc(t.title)}</div>
+      <div class="sub"><span class="pill ${di.cls}">${di.text}</span>${t.course ? `<span>${esc(t.course)}</span>` : ''}<span>${ty.emoji} ${ty.label}</span></div>
+    </button></div>`;
+}
+const openTasks = () => D.tasks.filter(t => !t.done);
+
+// ================= MONEY =================
+const sum = list => list.reduce((t, x) => t + (Number(x.amount) || 0), 0);
+const inMonth = (list, ym) => list.filter(x => x.date.startsWith(ym));
+const ymOf = (y, m) => `${y}-${pad(m + 1)}`;
+
+// ================= NAV =================
+let tab = 'home';
+const cal = { y: new Date().getFullYear(), m: new Date().getMonth(), sel: today(), view: 'month' };
+let moneyYM = today().slice(0, 7), taskFilter = 'all', showDone = false;
+function show(t) {
+  tab = t;
+  ['home', 'cal', 'tasks', 'money'].forEach(x => $('tab-' + x).classList.toggle('hidden', x !== t));
+  document.querySelectorAll('.nav-btn[data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  render(); window.scrollTo(0, 0);
+}
+function render() {
+  ({ home: renderHome, cal: renderCal, tasks: renderTasks, money: renderMoney })[tab]();
+  $('course-list').innerHTML = [...new Set(D.tasks.map(t => t.course).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
+}
+
+// ================= HOME =================
+function quoteOfDay() {
+  const d = new Date(), start = new Date(d.getFullYear(), 0, 0);
+  const day = Math.floor((d - start) / 864e5) + d.getFullYear() * 7;
+  return QUOTES[day % QUOTES.length];
+}
+function renderHome() {
+  const t = today(), now = new Date(), hr = now.getHours();
+  const greet = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
+  const [q, who] = quoteOfDay();
+  const evToday = eventsOn(t);
+  const due = openTasks().filter(x => x.due && daysBetween(t, x.due) <= 7).sort((a, b) => (a.due + (a.time || '')).localeCompare(b.due + (b.time || '')));
+  const ym = t.slice(0, 7);
+  const earned = sum(inMonth(D.income, ym)), spent = sum(inMonth(D.spending, ym)), left = earned - spent;
+  const nextExam = openTasks().filter(x => (x.type === 'exam' || x.type === 'test') && x.due && x.due >= t).sort((a, b) => a.due.localeCompare(b.due))[0];
+  const tomorrow = eventsOn(ymd(addDays(now, 1)));
+
+  let h = `<div class="hello">${greet}${D.settings.name ? ', ' + esc(firstName(D.settings.name)) : ''} ✨</div>
+    <div class="muted">${longDay(t)}</div>
+    <div class="quote"><div class="lbl2">Today's motivation</div><p>${esc(q)}</p>${who ? `<small>— ${esc(who)}</small>` : ''}</div>`;
+  if (nextExam) {
+    const n = daysBetween(t, nextExam.due);
+    h += `<button class="countdown" style="width:100%;text-align:left" data-action="open-task" data-id="${nextExam.id}">
+      <div class="n">${n === 0 ? '!' : n}<small>${n === 0 ? 'TODAY' : n === 1 ? 'DAY' : 'DAYS'}</small></div>
+      <div><b>${esc(nextExam.title)}</b><div class="muted">${TTYPE[nextExam.type].label}${nextExam.course ? ' · ' + esc(nextExam.course) : ''} · ${shortDay(nextExam.due)}</div></div></button>`;
+  }
+  h += `<h3>📅 Today <button class="more" data-action="tab" data-tab="cal">Calendar →</button></h3>`;
+  h += evToday.length ? `<div class="list">${evToday.map(e => eventCard(e, t)).join('')}</div>`
+    : `<div class="card">${emptyBox('☁️', 'Nothing planned today — enjoy it!',
+      tomorrow.length ? `<div class="muted" style="margin-top:6px">Tomorrow: ${tomorrow.map(e => esc(e.title)).join(', ')}</div>` : '')}</div>`;
+  h += `<h3>✅ Due soon <button class="more" data-action="tab" data-tab="tasks">All tasks →</button></h3>`;
+  h += due.length ? `<div class="list">${due.slice(0, 5).map(taskCard).join('')}</div>`
+    : `<div class="card">${emptyBox('🎉', 'Nothing due this week.')}</div>`;
+  h += `<h3>💸 ${new Date().toLocaleDateString('en-ZA', { month: 'long' })} <button class="more" data-action="tab" data-tab="money">Money →</button></h3>
+    <div class="snap">
+      <div class="stat"><div class="v pos">${money(earned)}</div><div class="l">Earned</div></div>
+      <div class="stat"><div class="v">${money(spent)}</div><div class="l">Spent</div></div>
+      <div class="stat"><div class="v ${left < 0 ? 'neg' : ''}">${money(left)}</div><div class="l">Left over</div></div>
+    </div>`;
+  if (D.settings.budget > 0) {
+    const pct = Math.min(100, Math.round(spent / D.settings.budget * 100));
+    h += `<div class="card" style="margin-top:8px;padding:12px 14px"><div class="muted" style="display:flex;justify-content:space-between;font-weight:700"><span>Budget used</span><span>${pct}% of ${money(D.settings.budget)}</span></div>
+      <div class="track" style="margin-top:6px"><div style="width:${pct}%;background:${pct >= 100 ? 'var(--red)' : pct >= 80 ? 'var(--amber)' : 'linear-gradient(90deg,#fb7185,#ec4899)'}"></div></div></div>`;
+  }
+  $('tab-home').innerHTML = h;
+}
+
+// ================= CALENDAR =================
+function renderCal() {
+  let h = `<div class="seg" style="margin-bottom:12px">
+      <button class="${cal.view === 'month' ? 'on' : ''}" data-action="cal-view" data-v="month">Month</button>
+      <button class="${cal.view === 'list' ? 'on' : ''}" data-action="cal-view" data-v="list">List</button></div>`;
+  if (cal.view === 'list') { $('tab-cal').innerHTML = h + agendaHTML(); return; }
+  const first = new Date(cal.y, cal.m, 1), startPad = (first.getDay() + 6) % 7;
+  const daysIn = new Date(cal.y, cal.m + 1, 0).getDate(), t = today();
+  h += `<div class="cal-head"><button class="arrow" data-action="cal-month" data-d="-1" aria-label="Previous month">&larr;</button>
+      <div style="text-align:center"><b style="font-size:18px">${monthLabel(cal.y, cal.m)}</b>
+      ${cal.y === new Date().getFullYear() && cal.m === new Date().getMonth() ? '' : '<div><button class="btn btn-ghost btn-sm" style="padding:4px 10px;margin-top:4px" data-action="cal-today">Today</button></div>'}</div>
+      <button class="arrow" data-action="cal-month" data-d="1" aria-label="Next month">&rarr;</button></div>
+    <div class="grid7">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => `<div class="dow">${d}</div>`).join('')}`;
+  for (let i = 0; i < startPad; i++) h += `<div class="cell out"></div>`;
+  for (let d = 1; d <= daysIn; d++) {
+    const ds = ymd(new Date(cal.y, cal.m, d));
+    const evs = eventsOn(ds), tks = tasksDueOn(ds).filter(x => !x.done);
+    const dots = evs.slice(0, 3).map(e => `<span class="dot" style="background:${(ECAT[e.cat] || ECAT.general).color}"></span>`).join('')
+      + (tks.length ? '<span class="dot due"></span>' : '') + (evs.length > 3 ? `<span class="more-n">+${evs.length - 3}</span>` : '');
+    h += `<button class="cell ${ds === t ? 'today' : ''} ${ds === cal.sel ? 'sel' : ''}" data-action="cal-pick" data-date="${ds}" aria-label="${longDay(ds)}"><span class="num">${d}</span><span class="dots">${dots}</span></button>`;
+  }
+  h += `</div><div class="legend">${EVENT_CATS.map(c => `<span><span class="dot" style="background:${c.color}"></span>${c.label}</span>`).join('')}<span><span class="dot due"></span>Due date</span></div>`;
+  h += dayHTML(cal.sel);
+  $('tab-cal').innerHTML = h;
+}
+function dayHTML(ds) {
+  const evs = eventsOn(ds), tks = tasksDueOn(ds);
+  const rel = daysBetween(today(), ds);
+  const relTxt = rel === 0 ? 'Today' : rel === 1 ? 'Tomorrow' : rel === -1 ? 'Yesterday' : '';
+  let h = `<div class="day-title"><div>${longDay(ds)}${relTxt ? `<small>${relTxt}</small>` : ''}</div>
+    <button class="btn btn-outline btn-sm" data-action="new-event" data-date="${ds}">+ Event</button></div>`;
+  if (!evs.length && !tks.length) return h + `<div class="card">${emptyBox('🌸', 'Free day — nothing planned.')}</div>`;
+  h += `<div class="list">${evs.map(e => eventCard(e, ds)).join('')}${tks.map(taskCard).join('')}</div>`;
+  return h;
+}
+function agendaHTML() {
+  const start = new Date(); let h = '', any = false;
+  for (let i = 0; i < 60; i++) {
+    const ds = ymd(addDays(start, i));
+    const evs = eventsOn(ds), tks = tasksDueOn(ds).filter(x => !x.done);
+    if (!evs.length && !tks.length) continue;
+    any = true;
+    h += `<div class="ag-day"><div class="ag-h ${i === 0 ? 'today' : ''}">${i === 0 ? 'Today · ' : i === 1 ? 'Tomorrow · ' : ''}${longDay(ds)}</div>
+      <div class="list">${evs.map(e => eventCard(e, ds)).join('')}${tks.map(taskCard).join('')}</div></div>`;
+  }
+  return any ? h : `<div class="card">${emptyBox('📅', 'Nothing in the next 60 days.', '<button class="btn btn-primary" style="margin-top:12px" data-action="new-event">+ Add an event</button>')}</div>`;
+}
+
+// ================= TASKS TAB =================
+function renderTasks() {
+  const courses = [...new Set(D.tasks.map(t => t.course).filter(Boolean))].sort();
+  if (taskFilter !== 'all' && !courses.includes(taskFilter)) taskFilter = 'all';
+  const match = t => taskFilter === 'all' || t.course === taskFilter;
+  const open = openTasks().filter(match), t0 = today();
+  const sortDue = (a, b) => ((a.due || '9') + (a.time || '')).localeCompare((b.due || '9') + (b.time || '')) || (b.important ? 1 : 0) - (a.important ? 1 : 0);
+  const groups = [
+    ['🚨 Overdue', open.filter(t => t.due && t.due < t0)],
+    ['📍 Today', open.filter(t => t.due === t0)],
+    ['🗓️ This week', open.filter(t => t.due && t.due > t0 && daysBetween(t0, t.due) <= 7)],
+    ['🔭 Later', open.filter(t => t.due && daysBetween(t0, t.due) > 7)],
+    ['📝 No due date', open.filter(t => !t.due)],
+  ];
+  const done = D.tasks.filter(t => t.done && match(t)).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+  let h = `<div class="row" style="align-items:center;margin-bottom:10px"><h2 style="margin:0">Tasks & deadlines</h2>
+      <button class="btn btn-primary btn-sm" style="flex:none" data-action="new-task">+ Add</button></div>`;
+  if (courses.length) h += `<div class="scroll-chips" style="margin-bottom:6px"><button class="chip ${taskFilter === 'all' ? 'on' : ''}" data-action="task-filter" data-v="all">All</button>${courses.map(c => `<button class="chip ${taskFilter === c ? 'on' : ''}" data-action="task-filter" data-v="${esc(c)}">${esc(c)}</button>`).join('')}</div>`;
+  if (!open.length && !done.length) h += `<div class="card">${emptyBox('🎓', 'Add assignments, tests, exams and to-dos here.<br>Due dates also show up on your calendar.', '<button class="btn btn-primary" style="margin-top:12px" data-action="new-task">+ Add a task</button>')}</div>`;
+  else if (!open.length) h += `<div class="card">${emptyBox('🎉', 'All done — nothing left to do!')}</div>`;
+  for (const [title, list] of groups) if (list.length) h += `<h3>${title} <span class="pill">${list.length}</span></h3><div class="list">${list.sort(sortDue).map(taskCard).join('')}</div>`;
+  if (done.length) {
+    h += `<h3>✔️ Completed <span class="pill">${done.length}</span><button class="more" data-action="toggle-done">${showDone ? 'Hide' : 'Show'}</button></h3>`;
+    if (showDone) h += `<div class="list">${done.slice(0, 30).map(taskCard).join('')}</div>`;
+  }
+  $('tab-tasks').innerHTML = h;
+}
+
+// ================= MONEY TAB =================
+function renderMoney() {
+  const [y, m] = moneyYM.split('-').map(Number);
+  const inc = inMonth(D.income, moneyYM), sp = inMonth(D.spending, moneyYM);
+  const earned = sum(inc), spent = sum(sp), left = earned - spent;
+  let h = `<div class="cal-head"><button class="arrow" data-action="money-month" data-d="-1">&larr;</button><b style="font-size:18px">${monthLabel(y, m - 1)}</b><button class="arrow" data-action="money-month" data-d="1">&rarr;</button></div>
+    <div class="snap">
+      <div class="stat"><div class="v pos">${money(earned)}</div><div class="l">Earned</div></div>
+      <div class="stat"><div class="v">${money(spent)}</div><div class="l">Spent</div></div>
+      <div class="stat"><div class="v ${left < 0 ? 'neg' : ''}">${money(left)}</div><div class="l">Left over</div></div>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="btn btn-outline" data-action="new-income">+ Income</button><button class="btn btn-primary" data-action="new-expense">+ Spending</button></div>`;
+  // budget
+  const b = D.settings.budget;
+  if (b > 0) {
+    const pct = Math.round(spent / b * 100);
+    h += `<div class="card" style="margin-top:12px"><div style="display:flex;justify-content:space-between;font-weight:700"><span>🎯 Spending budget</span><span>${money(spent)} / ${money(b)}</span></div>
+      <div class="track" style="margin-top:8px"><div style="width:${Math.min(100, pct)}%;background:${pct >= 100 ? 'var(--red)' : pct >= 80 ? 'var(--amber)' : 'linear-gradient(90deg,#fb7185,#ec4899)'}"></div></div>
+      <div class="muted" style="margin-top:6px">${pct >= 100 ? `Over budget by ${money(spent - b)} 😬` : `${money(b - spent)} left to spend this month`}</div></div>`;
+  } else h += `<button class="card" style="margin-top:12px;width:100%;text-align:left" data-action="settings"><b>🎯 Set a monthly spending budget</b><div class="muted">See how much you have left to spend each month.</div></button>`;
+  // income by source
+  h += `<h3>💰 Income</h3><div class="card">${earned ? `<div class="bars">${INCOME_SRC.map(s => {
+      const v = sum(inc.filter(x => x.source === s.id)); if (!v) return '';
+      return `<div class="barrow"><div class="top"><span>${s.emoji} ${s.label}</span><span>${money(v)}</span></div><div class="track"><div style="width:${v / earned * 100}%;background:${s.color}"></div></div></div>`;
+    }).join('')}</div>` : emptyBox('💰', 'No income logged this month.')}</div>`;
+  // spending by category
+  h += `<h3>🛍️ Spending</h3><div class="card">${spent ? `<div class="bars">${SPEND_CATS.map(c => ({ c, v: sum(sp.filter(x => x.cat === c.id)) })).filter(x => x.v).sort((a, b) => b.v - a.v).map(({ c, v }) =>
+      `<div class="barrow"><div class="top"><span>${c.emoji} ${c.label}</span><span>${money(v)}</span></div><div class="track"><div style="width:${v / spent * 100}%;background:${c.color}"></div></div></div>`).join('')}</div>` : emptyBox('🛍️', 'No spending logged this month.')}</div>`;
+  // 6-month chart
+  const months = [...Array(6)].map((_, i) => { const d = new Date(y, m - 1 - 5 + i, 1); return { ym: ymOf(d.getFullYear(), d.getMonth()), lbl: d.toLocaleDateString('en-ZA', { month: 'short' }) }; });
+  const vals = months.map(x => ({ ...x, i: sum(inMonth(D.income, x.ym)), s: sum(inMonth(D.spending, x.ym)) }));
+  const max = Math.max(1, ...vals.map(v => Math.max(v.i, v.s)));
+  h += `<h3>📈 Last 6 months</h3><div class="card"><div class="chart">${vals.map(v => `<div class="col"><div class="pair">
+      <div style="height:${v.i / max * 100}%;background:#22c55e" title="Earned ${money(v.i)}"></div><div style="height:${v.s / max * 100}%;background:#f472b6" title="Spent ${money(v.s)}"></div></div>
+      <div class="m" style="${v.ym === moneyYM ? 'color:var(--pink-d)' : ''}">${v.lbl}</div></div>`).join('')}</div>
+      <div class="legend" style="justify-content:center"><span><span class="dot" style="background:#22c55e"></span>Earned</span><span><span class="dot" style="background:#f472b6"></span>Spent</span></div></div>`;
+  // goals
+  h += `<h3>🌟 Savings goals <button class="more" data-action="new-goal">+ New goal</button></h3><div class="card">${D.goals.length ? D.goals.map(g => {
+      const pct = Math.min(100, Math.round((g.saved || 0) / (g.target || 1) * 100));
+      return `<div class="goal"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <button style="text-align:left;flex:1" data-action="edit-goal" data-id="${g.id}"><b>${esc(g.name)}</b><div class="muted">${money(g.saved)} of ${money(g.target)} · ${pct}%${pct >= 100 ? ' 🎉' : ''}</div></button>
+        <button class="btn btn-outline btn-sm" data-action="add-to-goal" data-id="${g.id}">+ Add</button></div>
+        <div class="track" style="margin-top:8px"><div style="width:${pct}%;background:linear-gradient(90deg,#a855f7,#ec4899)"></div></div></div>`;
+    }).join('') : emptyBox('🌟', 'Saving for something? A laptop for Wits, a trip, a gift… add a goal and track it.')}</div>`;
+  // transactions
+  const tx = [...inc.map(x => ({ ...x, k: 'income' })), ...sp.map(x => ({ ...x, k: 'expense' }))].sort((a, b) => b.date.localeCompare(a.date) || (b.created || 0) - (a.created || 0));
+  h += `<h3>🧾 This month's entries</h3><div class="card" style="padding:4px 14px">${tx.length ? tx.map(x => {
+      const meta = x.k === 'income' ? (ISRC[x.source] || ISRC.other) : (SCAT[x.cat] || SCAT.other);
+      return `<button class="tx" data-action="${x.k === 'income' ? 'edit-income' : 'edit-expense'}" data-id="${x.id}">
+        <span class="ic" style="background:${meta.color}22">${meta.emoji}</span>
+        <span class="main"><b>${esc(x.note || meta.label)}</b><span class="muted">${shortDay(x.date)} · ${meta.label}</span></span>
+        <span class="amt ${x.k === 'income' ? 'pos' : ''}">${x.k === 'income' ? '+' : '−'}${money(x.amount)}</span></button>`;
+    }).join('') : emptyBox('🧾', 'Nothing logged yet this month.')}</div>`;
+  $('tab-money').innerHTML = h;
+}
+
+// ================= SHEETS =================
+let ctx = null;
+function openSheet(html, c = {}) { ctx = c; $('sheet-body').innerHTML = html; $('sheet').classList.remove('hidden'); }
+function closeSheet() { $('sheet').classList.add('hidden'); ctx = null; }
+const sheetButtons = (saveLabel, del) => `<div class="row" style="margin-top:18px">${del ? `<button class="btn btn-danger" data-action="${del}">Delete</button>` : `<button class="btn btn-ghost" data-action="close">Cancel</button>`}<button class="btn btn-primary" data-action="save">${saveLabel}</button></div>`;
+function done(msg) { save(); closeSheet(); render(); if (msg) toast(msg); }
+
+function addMenu() {
+  openSheet(`<h2>Add something</h2><div class="addgrid">
+    <button class="addbtn" data-action="new-event"><div class="e">📅</div><b>Event</b><span>Class, shift, plans</span></button>
+    <button class="addbtn" data-action="new-task"><div class="e">✅</div><b>Task / deadline</b><span>Assignment, test, to-do</span></button>
+    <button class="addbtn" data-action="new-income"><div class="e">💰</div><b>Income</b><span>Tutoring, KD Jam</span></button>
+    <button class="addbtn" data-action="new-expense"><div class="e">🛍️</div><b>Spending</b><span>Shopping, food…</span></button>
+  </div><button class="btn btn-ghost" style="margin-top:14px" data-action="close">Close</button>`);
+}
+
+// --- event ---
+function eventForm(id, date) {
+  const e = id ? D.events.find(x => x.id === id) : { title: '', cat: 'general', date: date || (tab === 'cal' ? cal.sel : today()), allDay: false, start: '09:00', end: '10:00', repeat: 'none', until: '', location: '', notes: '' };
+  openSheet(`<h2>${id ? 'Edit event' : 'New event'}</h2>
+    <label class="lbl">What</label><input id="f-title" class="in" value="${esc(e.title)}" placeholder="e.g. Lift to gym, KD Jam shift, Dinner with friends">
+    <label class="lbl">Type</label><div class="chips">${chipsHTML(EVENT_CATS, e.cat, 'pick-cat')}</div>
+    <label class="lbl">${e.repeat === 'weekly' ? 'Starts on' : 'Date'}</label><input id="f-date" class="in" type="date" value="${e.date}">
+    <label class="check"><input type="checkbox" id="f-allday" ${e.allDay ? 'checked' : ''}> All day</label>
+    <div class="row" id="f-times" ${e.allDay ? 'style="display:none"' : ''}><div><label class="lbl">From</label><input id="f-start" class="in" type="time" value="${e.start || ''}"></div>
+      <div><label class="lbl">To</label><input id="f-end" class="in" type="time" value="${e.end || ''}"></div></div>
+    <label class="check"><input type="checkbox" id="f-repeat" ${e.repeat === 'weekly' ? 'checked' : ''}> Repeats every week (lectures, shifts, tutoring)</label>
+    <div id="f-until-box" ${e.repeat === 'weekly' ? '' : 'class="hidden"'}><label class="lbl">Until (optional)</label><input id="f-until" class="in" type="date" value="${e.until || ''}"></div>
+    <label class="lbl">Where (optional)</label><input id="f-loc" class="in" value="${esc(e.location)}" placeholder="e.g. Wits, Great Hall">
+    <label class="lbl">Notes (optional)</label><textarea id="f-notes" class="in">${esc(e.notes)}</textarea>
+    ${sheetButtons(id ? 'Save' : 'Add event', id ? 'delete-event' : '')}`,
+    { kind: 'event', id, cat: e.cat, date: date || e.date });
+  $('f-allday').onchange = ev => $('f-times').style.display = ev.target.checked ? 'none' : '';
+  $('f-repeat').onchange = ev => $('f-until-box').classList.toggle('hidden', !ev.target.checked);
+  $('f-start').onchange = () => { const s = $('f-start').value, en = $('f-end').value; if (s && (!en || en <= s)) { const [h, m] = s.split(':').map(Number); $('f-end').value = `${pad(Math.min(23, h + 1))}:${pad(m)}`; } };
+  if (!id) setTimeout(() => $('f-title').focus(), 50);
+}
+function saveEvent() {
+  const title = $('f-title').value.trim();
+  if (!title) { $('f-title').focus(); return toast('Give the event a name'); }
+  const data = { title, cat: ctx.cat, date: $('f-date').value || today(), allDay: $('f-allday').checked, start: $('f-start').value, end: $('f-end').value,
+    repeat: $('f-repeat').checked ? 'weekly' : 'none', until: $('f-repeat').checked ? $('f-until').value : '', location: $('f-loc').value.trim(), notes: $('f-notes').value.trim() };
+  if (!data.allDay && !data.start) return toast('Add a start time, or tick "All day"');
+  if (ctx.id) Object.assign(D.events.find(x => x.id === ctx.id), data);
+  else D.events.push({ id: uid(), skip: [], ...data });
+  cal.sel = data.date; const d = parseYmd(data.date); cal.y = d.getFullYear(); cal.m = d.getMonth();
+  done(ctx.id ? 'Event updated' : 'Added to your calendar 📅');
+}
+function eventDetail(id, date) {
+  const e = D.events.find(x => x.id === id); if (!e) return;
+  const c = ECAT[e.cat] || ECAT.general;
+  openSheet(`<div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:30px">${c.emoji}</div>
+      <div style="flex:1"><h2 style="margin:0">${esc(e.title)}</h2><div class="muted" style="font-size:15px;margin-top:4px">${longDay(date)}<br>${e.allDay ? 'All day' : `${e.start}${e.end ? ' – ' + e.end : ''}`}</div></div></div>
+    <div class="card" style="margin-top:14px;padding:6px 14px;font-size:15px">
+      <div style="padding:8px 0">${c.emoji} ${c.label}</div>
+      ${e.location ? `<div style="padding:8px 0;border-top:1px solid var(--line)">📍 ${esc(e.location)}</div>` : ''}
+      ${e.repeat === 'weekly' ? `<div style="padding:8px 0;border-top:1px solid var(--line)">🔁 Every ${parseYmd(e.date).toLocaleDateString('en-ZA', { weekday: 'long' })}${e.until ? ' until ' + shortDay(e.until) : ''}</div>` : ''}
+      ${e.notes ? `<div style="padding:8px 0;border-top:1px solid var(--line);white-space:pre-wrap">📝 ${esc(e.notes)}</div>` : ''}
+    </div>
+    <div class="row" style="margin-top:16px"><button class="btn btn-ghost" data-action="close">Close</button><button class="btn btn-primary" data-action="edit-event" data-id="${id}">Edit</button></div>
+    ${e.repeat === 'weekly' ? `<button class="btn btn-danger" style="margin-top:8px" data-action="skip-event" data-id="${id}" data-date="${date}">Remove just this day</button>` : ''}`,
+    { kind: 'eventDetail', id, date });
+}
+
+// --- task ---
+function taskForm(id) {
+  const t = id ? D.tasks.find(x => x.id === id) : { title: '', type: 'assignment', course: taskFilter !== 'all' ? taskFilter : '', due: '', time: '', notes: '', important: false };
+  openSheet(`<h2>${id ? 'Edit task' : 'New task or deadline'}</h2>
+    <label class="lbl">What needs doing</label><input id="f-title" class="in" value="${esc(t.title)}" placeholder="e.g. Psychology essay, Stats test 1">
+    <label class="lbl">Type</label><div class="chips">${chipsHTML(TASK_TYPES, t.type, 'pick-type')}</div>
+    <label class="lbl">Course / subject (optional)</label><input id="f-course" class="in" value="${esc(t.course)}" placeholder="e.g. PSYC1004" list="course-list" autocapitalize="characters">
+    <div class="row"><div><label class="lbl">Due date</label><input id="f-due" class="in" type="date" value="${t.due}"></div>
+      <div style="flex:.7"><label class="lbl">Time (optional)</label><input id="f-time" class="in" type="time" value="${t.time}"></div></div>
+    <label class="check"><input type="checkbox" id="f-imp" ${t.important ? 'checked' : ''}> ⭐ Important</label>
+    <label class="lbl">Notes (optional)</label><textarea id="f-notes" class="in" placeholder="Venue, chapters, submission link…">${esc(t.notes)}</textarea>
+    ${sheetButtons(id ? 'Save' : 'Add task', id ? 'delete-task' : '')}`, { kind: 'task', id, type: t.type });
+  if (!id) setTimeout(() => $('f-title').focus(), 50);
+}
+function saveTask() {
+  const title = $('f-title').value.trim();
+  if (!title) { $('f-title').focus(); return toast('What needs doing?'); }
+  const data = { title, type: ctx.type, course: $('f-course').value.trim(), due: $('f-due').value, time: $('f-time').value, important: $('f-imp').checked, notes: $('f-notes').value.trim() };
+  if (ctx.id) Object.assign(D.tasks.find(x => x.id === ctx.id), data);
+  else D.tasks.push({ id: uid(), done: false, created: Date.now(), ...data });
+  done(ctx.id ? 'Task updated' : 'Task added ✅');
+}
+
+// --- income / spending ---
+function moneyForm(kind, id) {
+  const list = kind === 'income' ? D.income : D.spending;
+  const x = id ? list.find(i => i.id === id) : { amount: '', source: 'tutoring', cat: 'shopping', date: today(), note: '' };
+  const isInc = kind === 'income';
+  openSheet(`<h2>${id ? 'Edit' : 'Add'} ${isInc ? 'income 💰' : 'spending 🛍️'}</h2>
+    <label class="lbl">Amount (R)</label><input id="f-amt" class="in big" type="number" inputmode="decimal" min="0" step="0.01" value="${x.amount}" placeholder="0">
+    <label class="lbl">${isInc ? 'From' : 'On'}</label><div class="chips">${isInc ? chipsHTML(INCOME_SRC, x.source, 'pick-src') : chipsHTML(SPEND_CATS, x.cat, 'pick-scat')}</div>
+    <label class="lbl">Date</label><input id="f-date" class="in" type="date" value="${x.date}">
+    <label class="lbl">Note (optional)</label><input id="f-note" class="in" value="${esc(x.note)}" placeholder="${isInc ? 'e.g. Noa – 2 lessons' : 'e.g. Zara jeans'}">
+    ${sheetButtons(id ? 'Save' : 'Add', id ? 'delete-money' : '')}`,
+    { kind, id, source: x.source, cat: x.cat });
+  if (!id) setTimeout(() => $('f-amt').focus(), 50);
+}
+function saveMoney() {
+  const amount = Math.round(Number($('f-amt').value) * 100) / 100;
+  if (!(amount > 0)) { $('f-amt').focus(); return toast('Enter an amount'); }
+  const list = ctx.kind === 'income' ? D.income : D.spending;
+  const data = { amount, date: $('f-date').value || today(), note: $('f-note').value.trim(), ...(ctx.kind === 'income' ? { source: ctx.source } : { cat: ctx.cat }) };
+  if (ctx.id) Object.assign(list.find(i => i.id === ctx.id), data);
+  else list.push({ id: uid(), created: Date.now(), ...data });
+  moneyYM = data.date.slice(0, 7);
+  done(ctx.kind === 'income' ? `+${money(amount)} added 💰` : `${money(amount)} logged`);
+}
+
+// --- goals ---
+function goalForm(id) {
+  const g = id ? D.goals.find(x => x.id === id) : { name: '', target: '', saved: 0 };
+  openSheet(`<h2>${id ? 'Edit goal' : 'New savings goal'}</h2>
+    <label class="lbl">Saving for</label><input id="f-name" class="in" value="${esc(g.name)}" placeholder="e.g. Laptop for Wits">
+    <div class="row"><div><label class="lbl">Target (R)</label><input id="f-target" class="in" type="number" inputmode="decimal" value="${g.target}"></div>
+      <div><label class="lbl">Saved so far (R)</label><input id="f-saved" class="in" type="number" inputmode="decimal" value="${g.saved || 0}"></div></div>
+    ${sheetButtons(id ? 'Save' : 'Create goal', id ? 'delete-goal' : '')}`, { kind: 'goal', id });
+}
+function saveGoal() {
+  const name = $('f-name').value.trim(), target = Number($('f-target').value), saved = Number($('f-saved').value) || 0;
+  if (!name) return toast('What are you saving for?');
+  if (!(target > 0)) return toast('Set a target amount');
+  if (ctx.id) Object.assign(D.goals.find(x => x.id === ctx.id), { name, target, saved });
+  else D.goals.push({ id: uid(), name, target, saved });
+  done('Goal saved 🌟');
+}
+function addToGoal(id) {
+  const g = D.goals.find(x => x.id === id);
+  openSheet(`<h2>Add to “${esc(g.name)}”</h2><div class="muted">${money(g.saved)} of ${money(g.target)} saved</div>
+    <label class="lbl">Amount (R)</label><input id="f-amt" class="in big" type="number" inputmode="decimal" placeholder="0">
+    <div class="row" style="margin-top:18px"><button class="btn btn-ghost" data-action="close">Cancel</button><button class="btn btn-purple" data-action="save">Add to goal</button></div>`, { kind: 'goal-add', id });
+  setTimeout(() => $('f-amt').focus(), 50);
+}
+
+// --- settings + backup ---
+function settingsSheet() {
+  const lb = Number(localStorage.getItem(KEY + '_backup')) || 0;
+  openSheet(`<h2>Settings</h2>
+    <label class="lbl">Your name</label><input id="s-name" class="in" value="${esc(D.settings.name)}" placeholder="Your name">
+    <label class="lbl">Monthly spending budget (R, optional)</label><input id="s-budget" class="in" type="number" inputmode="decimal" value="${D.settings.budget || ''}" placeholder="e.g. 3000">
+    <button class="btn btn-primary" style="margin-top:16px" data-action="save">Save</button>
+    <div class="card" style="margin-top:18px"><b>💾 Backup</b>
+      <p class="muted" style="margin:6px 0 10px">Everything is saved on this device. Save a backup file to Files, iCloud or Google Drive so nothing is lost if browsing data is cleared or you change phones.</p>
+      <div class="muted" style="font-size:12px;margin-bottom:10px">Last backup: <b>${lb ? new Date(lb).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' }) : 'never'}</b></div>
+      <div class="row"><button class="btn btn-primary" data-action="backup">💾 Back up</button><button class="btn btn-outline" data-action="restore">📂 Restore</button></div></div>
+    <button class="btn btn-ghost" style="margin-top:10px" data-action="close">Close</button>`, { kind: 'settings' });
+}
+async function backup() {
+  const name = `${APP_NAME}-backup-${today()}.json`;
+  const file = new File([JSON.stringify({ app: APP_NAME, version: 1, exported: new Date().toISOString(), data: D })], name, { type: 'application/json' });
+  let saved = false;
+  if (navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: `${APP_NAME} backup` }); saved = true; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  if (!saved) { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 60000); }
+  localStorage.setItem(KEY + '_backup', String(Date.now()));
+  settingsSheet(); toast('Backup saved 💾');
+}
+async function restore(file) {
+  if (!file) return;
+  let j; try { j = JSON.parse(await file.text()); } catch { return toast('That isn\'t a backup file'); }
+  if (j?.app !== APP_NAME || !j.data) return toast(`That isn't a ${APP_NAME} backup`);
+  let added = 0;
+  for (const k of ['events', 'tasks', 'income', 'spending', 'goals']) {
+    const have = new Set(D[k].map(x => x.id));
+    for (const x of j.data[k] || []) if (!have.has(x.id)) { D[k].push(x); added++; }
+  }
+  if (!D.settings.name) D.settings = { ...D.settings, ...j.data.settings };
+  done(`Restored ${added} item${added === 1 ? '' : 's'}`);
+}
+
+// ================= ACTIONS =================
+const actions = {
+  tab: el => { closeSheet(); show(el.dataset.tab); },
+  close: closeSheet,
+  'sheet-bg': (el, e) => { if (e.target === el) closeSheet(); },
+  'add-menu': addMenu,
+  settings: settingsSheet,
+  backup, restore: () => { $('restore-input').value = ''; $('restore-input').click(); },
+  save: () => ({ event: saveEvent, task: saveTask, income: saveMoney, expense: saveMoney, goal: saveGoal,
+    'goal-add': () => { const g = D.goals.find(x => x.id === ctx.id), v = Number($('f-amt').value); if (!(v > 0)) return toast('Enter an amount'); g.saved = (g.saved || 0) + v; done(g.saved >= g.target ? `Goal reached! 🎉` : `+${money(v)} saved 🌟`); },
+    settings: () => { D.settings.name = $('s-name').value.trim(); D.settings.budget = Math.max(0, Number($('s-budget').value) || 0); done('Saved'); } })[ctx.kind](),
+  // calendar
+  'cal-view': el => { cal.view = el.dataset.v; renderCal(); },
+  'cal-month': el => { const d = new Date(cal.y, cal.m + Number(el.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); renderCal(); },
+  'cal-today': () => { const d = new Date(); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = today(); renderCal(); },
+  'cal-pick': el => { cal.sel = el.dataset.date; renderCal(); document.querySelector('.day-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
+  // events
+  'new-event': el => eventForm(null, el.dataset.date),
+  'open-event': el => eventDetail(el.dataset.id, el.dataset.date),
+  'edit-event': el => eventForm(el.dataset.id),
+  'pick-cat': el => { ctx.cat = el.dataset.v; setChip(el); },
+  'delete-event': () => {
+    const e = D.events.find(x => x.id === ctx.id);
+    if (!confirm(e.repeat === 'weekly' ? `Delete "${e.title}" on every week?` : `Delete "${e.title}"?`)) return;
+    D.events = D.events.filter(x => x.id !== ctx.id); done('Event deleted');
+  },
+  'skip-event': el => { const e = D.events.find(x => x.id === el.dataset.id); (e.skip ||= []).push(el.dataset.date); done(`Removed on ${shortDay(el.dataset.date)}`); },
+  // tasks
+  'new-task': () => taskForm(),
+  'open-task': el => taskForm(el.dataset.id),
+  'pick-type': el => { ctx.type = el.dataset.v; setChip(el); },
+  'toggle-task': el => { const t = D.tasks.find(x => x.id === el.dataset.id); t.done = !t.done; t.doneAt = t.done ? Date.now() : null; save(); render(); if (t.done) toast(pickCheer()); },
+  'delete-task': () => { if (!confirm('Delete this task?')) return; D.tasks = D.tasks.filter(x => x.id !== ctx.id); done('Task deleted'); },
+  'task-filter': el => { taskFilter = el.dataset.v; renderTasks(); },
+  'toggle-done': () => { showDone = !showDone; renderTasks(); },
+  // money
+  'new-income': () => moneyForm('income'),
+  'new-expense': () => moneyForm('expense'),
+  'edit-income': el => moneyForm('income', el.dataset.id),
+  'edit-expense': el => moneyForm('expense', el.dataset.id),
+  'pick-src': el => { ctx.source = el.dataset.v; setChip(el); },
+  'pick-scat': el => { ctx.cat = el.dataset.v; setChip(el); },
+  'delete-money': () => { if (!confirm('Delete this entry?')) return; const k = ctx.kind === 'income' ? 'income' : 'spending'; D[k] = D[k].filter(x => x.id !== ctx.id); done('Deleted'); },
+  'money-month': el => { const [y, m] = moneyYM.split('-').map(Number); const d = new Date(y, m - 1 + Number(el.dataset.d), 1); moneyYM = ymOf(d.getFullYear(), d.getMonth()); renderMoney(); },
+  'new-goal': () => goalForm(),
+  'edit-goal': el => goalForm(el.dataset.id),
+  'add-to-goal': el => addToGoal(el.dataset.id),
+  'delete-goal': () => { if (!confirm('Delete this goal?')) return; D.goals = D.goals.filter(x => x.id !== ctx.id); done('Goal deleted'); },
+};
+const CHEERS = ['Nice one! ✨', 'Done and dusted 💪', 'One less thing! 🎉', 'Look at you go 💖', 'Ticked off ✅'];
+const pickCheer = () => CHEERS[Math.floor(Math.random() * CHEERS.length)];
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if (!el || el.disabled) return;
+  const fn = actions[el.dataset.action];
+  if (fn) Promise.resolve(fn(el, e)).catch(err => { console.error(err); toast('Something went wrong: ' + err.message); });
+});
+$('restore-input').addEventListener('change', e => restore(e.target.files[0]));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && $('sheet').classList.contains('hidden')) render(); });
+try { navigator.storage?.persist?.(); } catch {}
+
+// ================= START =================
+$('app-name').textContent = APP_NAME; document.title = APP_NAME;
+// One-time: bring over paid tutoring from the old TutorBook app (same website) as income
+(function importTutorBook() {
+  if (localStorage.getItem(KEY + '_tb_imported')) return;
+  try {
+    const tb = JSON.parse(localStorage.getItem('tutorbook_v1'));
+    if (!tb?.sessions?.length) return;
+    const names = Object.fromEntries((tb.students || []).map(s => [s.id, s.name]));
+    const chargeNoShow = tb.settings?.chargeNoShow !== false;
+    const paid = tb.sessions.filter(s => s.paid && (s.status === 'done' || (s.status === 'noshow' && chargeNoShow)) && s.price > 0);
+    for (const s of paid) D.income.push({ id: 'tb_' + s.id, amount: s.price, source: 'tutoring', date: s.paidOn || s.date, note: `${names[s.studentId] || 'Tutoring'}${s.subject ? ' – ' + s.subject : ''}`, created: Date.now() });
+    if (!D.settings.name && tb.settings?.tutorName) D.settings.name = tb.settings.tutorName;
+    localStorage.setItem(KEY + '_tb_imported', '1'); save();
+    if (paid.length) setTimeout(() => toast(`Brought over ${money(sum(paid.map(s => ({ amount: s.price }))))} of tutoring income from TutorBook 💰`), 600);
+  } catch (e) { console.warn('TutorBook import skipped', e); }
+})();
+render();
+if (!D.settings.name) setTimeout(() => { settingsSheet(); toast('Welcome! 👋 Start by adding your name'); }, 300);
+</script>
+</body>
+</html>
